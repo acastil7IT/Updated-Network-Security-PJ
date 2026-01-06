@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "SecureNet Monitor - Network Security Dashboard Demo",
   "scripts": {
-    "build": "cd frontend && npm install && npm run build",
+    "build": "cd frontend && npm install && npm run build && cp -r build/* ../public/",
     "start": "cd frontend && npm start"
   },
   "repository": {
