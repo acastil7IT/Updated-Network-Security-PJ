@@ -8,6 +8,7 @@ import {
   PlayCircleOutlined,
   StopOutlined
 } from '@ant-design/icons';
+import axios from 'axios';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -25,7 +26,7 @@ const AdvancedScanning = () => {
     { value: 'stealth', label: 'Stealth Scan', description: 'SYN scan to avoid detection' },
     { value: 'fast', label: 'Fast Scan', description: 'Quick scan of common ports' },
     { value: 'vulnerability', label: 'Vulnerability Scan', description: 'Web vulnerability assessment' },
-    { value: 'network_discovery', label: 'Network Discovery', description: 'Find live hosts on network' }
+    { value: 'network_discovery', label: 'Network Discovery', description: 'Find devices on your local network' }
   ];
 
   const predefinedTargets = [
@@ -37,6 +38,48 @@ const AdvancedScanning = () => {
   const startAdvancedScan = async () => {
     setScanning(true);
     setScanProgress(0);
+    
+    // Check if this is a network discovery scan
+    if (scanType === 'network_discovery') {
+      try {
+        // Fetch real network devices from API
+        const response = await axios.get('http://localhost:8001/api/network/devices', {
+          headers: { 'Authorization': 'Bearer demo-token' }
+        });
+        
+        // Convert network devices to scan results format
+        const deviceResults = response.data.devices.map((device, index) => ({
+          key: index.toString(),
+          finding: `Device Found: ${device.hostname || device.ip_address}`,
+          severity: device.is_online ? 'INFO' : 'LOW',
+          tool: 'Network Discovery',
+          description: `${device.device_type || 'Unknown'} device at ${device.ip_address}${device.mac_address ? ` (MAC: ${device.mac_address})` : ''}`
+        }));
+        
+        setScanProgress(100);
+        setScanResults(deviceResults);
+        
+        // Add to recent scans
+        const newScan = {
+          id: Date.now(),
+          target: selectedTarget,
+          type: scanType,
+          timestamp: new Date().toISOString(),
+          findings: deviceResults.length,
+          status: 'completed'
+        };
+        setRecentScans(prev => [newScan, ...prev.slice(0, 4)]);
+        
+        setTimeout(() => {
+          setScanning(false);
+          setScanProgress(0);
+        }, 1000);
+        
+        return;
+      } catch (error) {
+        console.error('Network discovery failed:', error);
+      }
+    }
     
     // Demo version - uses mock data only for public safety
     const progressInterval = setInterval(() => {
