@@ -1,4 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { Card, Row, Col, Table, Tag, Button, Space, Modal, Descriptions, Progress, Alert, Tooltip } from 'antd';
+import { 
+  WifiOutlined, 
+  LaptopOutlined, 
+  MobileOutlined,
+  ApiOutlined,
+  CloudServerOutlined,
+  ReloadOutlined,
+  EyeOutlined,
+  WarningOutlined,
+  CheckCircleOutlined
+} from '@ant-design/icons';
+import axios from 'axios';
+import moment from 'moment';
 
 // Mock network devices data for cloud deployment
 const mockNetworkDevices = [
@@ -106,20 +120,6 @@ const mockStats = {
   offline: 1,
   new_today: 1
 };
-import { Card, Row, Col, Table, Tag, Button, Space, Modal, Descriptions, Progress, Alert, Tooltip } from 'antd';
-import { 
-  WifiOutlined, 
-  LaptopOutlined, 
-  MobileOutlined,
-  ApiOutlined,
-  CloudServerOutlined,
-  ReloadOutlined,
-  EyeOutlined,
-  WarningOutlined,
-  CheckCircleOutlined
-} from '@ant-design/icons';
-import axios from 'axios';
-import moment from 'moment';
 
 const NetworkDiscovery = () => {
   const [devices, setDevices] = useState([]);
