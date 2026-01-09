@@ -149,7 +149,7 @@ const NetworkTraffic = () => {
   return (
     <div className="cyberhawk-content">
       <div className="page-header">
-        <h1>📡 Live Network Monitor</h1>
+        <h1>Live Network Monitor</h1>
         <p>Monitor live network traffic across your infrastructure. Traffic is automatically captured and analyzed for security patterns.</p>
       </div>
 
@@ -197,7 +197,7 @@ const NetworkTraffic = () => {
 
       <div className="content-card">
         <div className="card-header">
-          <h3>🌐 Real-Time Network Analysis</h3>
+          <h3>Real-Time Network Analysis</h3>
           <div className="controls">
             <Space>
               <Input

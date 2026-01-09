@@ -305,7 +305,7 @@ const NetworkDiscovery = () => {
   return (
     <div className="cyberhawk-content">
       <div className="page-header">
-        <h1>🌐 Network Discovery</h1>
+        <h1>Network Discovery</h1>
         <p>Real-time monitoring of devices on your local network. This feature scans your network to discover connected devices and monitor their status.</p>
       </div>
 
@@ -352,7 +352,7 @@ const NetworkDiscovery = () => {
       </div>
 
       <div className="content-card">
-        <h3>🎮 Network Scan Control</h3>
+        <h3>Network Scan Control</h3>
         <div className="control-panel">
           <Button
             type="primary"
@@ -380,7 +380,7 @@ const NetworkDiscovery = () => {
       </div>
 
       <div className="content-card">
-        <h3>📡 Discovered Devices</h3>
+        <h3>Discovered Devices</h3>
         <Table
           columns={columns}
           dataSource={devices}

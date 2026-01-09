@@ -539,7 +539,7 @@ const AdvancedScanning = () => {
   return (
     <div className="cyberhawk-content">
       <div className="page-header">
-        <h1>🔍 Advanced Scanning</h1>
+        <h1>Advanced Scanning</h1>
         <p>Professional security tools integration: Nmap, Wireshark, Nikto, and more. Only scan systems you own or have permission to test.</p>
       </div>
 
@@ -607,7 +607,7 @@ const AdvancedScanning = () => {
 
       <div className="content-grid">
         <div className="content-card scan-config">
-          <h3>🎯 Scan Configuration</h3>
+          <h3>Scan Configuration</h3>
           <div className="form-group">
             <label>Target:</label>
             <Select
@@ -668,7 +668,7 @@ const AdvancedScanning = () => {
         <Tabs defaultActiveKey="devices" className="cyberhawk-tabs">
         <TabPane tab={
           <span>
-            🌐 Network Devices 
+            Network Devices 
             <Badge count={deviceStats.total} style={{ marginLeft: 8 }} />
           </span>
         } key="devices">
@@ -722,7 +722,7 @@ const AdvancedScanning = () => {
           </div>
         </TabPane>
 
-        <TabPane tab="🔍 Scan Results" key="results">
+        <TabPane tab="Scan Results" key="results">
           <div className="scan-results-section">
             <h4>Latest Scan Results</h4>
             {scanResults.length > 0 ? (
@@ -742,7 +742,7 @@ const AdvancedScanning = () => {
           </div>
         </TabPane>
 
-        <TabPane tab="📋 Recent Scans" key="history">
+        <TabPane tab="Recent Scans" key="history">
           <div className="scan-history-section">
             <h4>Scan History</h4>
             <Table
@@ -755,7 +755,7 @@ const AdvancedScanning = () => {
           </div>
         </TabPane>
 
-        <TabPane tab="🛠️ Tools" key="tools">
+        <TabPane tab="Tools" key="tools">
           <div className="tools-section">
             <h4>Available Security Tools</h4>
             <div className="tools-grid">

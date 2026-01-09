@@ -75,7 +75,7 @@ const LiveAlerts = () => {
   return (
     <div className="cyberhawk-content">
       <div className="page-header">
-        <h1>🚨 Cyber Arsenal</h1>
+        <h1>Cyber Arsenal</h1>
         <p>Live threat detection system monitoring your network for suspicious activities. Alerts are automatically classified and prioritized.</p>
       </div>
 
@@ -123,7 +123,7 @@ const LiveAlerts = () => {
 
       <div className="content-card">
         <div className="card-header">
-          <h3>⚡ Real-Time Security Monitoring</h3>
+          <h3>Real-Time Security Monitoring</h3>
           <div className="controls">
             <Space>
               <Button 
@@ -138,7 +138,7 @@ const LiveAlerts = () => {
                 type={autoRefresh ? 'primary' : 'default'}
                 onClick={() => setAutoRefresh(!autoRefresh)}
               >
-                {autoRefresh ? '🔄 Auto-Refresh ON' : '⏸️ Auto-Refresh OFF'}
+                {autoRefresh ? 'Auto-Refresh ON' : 'Auto-Refresh OFF'}
               </Button>
               <Badge 
                 count={alerts.length} 
@@ -152,7 +152,7 @@ const LiveAlerts = () => {
 
         {alerts.length === 0 && !loading && (
           <div className="alert-success">
-            <h4>🛡️ All Clear</h4>
+            <h4>All Clear</h4>
             <p>No security threats detected in the last few minutes. Your network is secure.</p>
           </div>
         )}
@@ -224,7 +224,7 @@ const LiveAlerts = () => {
                       
                       {alert.raw_data && (
                         <details className="raw-data-details">
-                          <summary>🔍 Raw Data Analysis</summary>
+                          <summary>Raw Data Analysis</summary>
                           <pre className="raw-data-pre">
                             {JSON.stringify(alert.raw_data, null, 2)}
                           </pre>

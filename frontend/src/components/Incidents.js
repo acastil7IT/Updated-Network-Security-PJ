@@ -279,7 +279,7 @@ const Incidents = () => {
   return (
     <div className="cyberhawk-content">
       <div className="page-header">
-        <h1>🎯 Threat Intelligence</h1>
+        <h1>Threat Intelligence</h1>
         <p>Monitor and respond to security incidents across your network infrastructure. All incidents are automatically classified and prioritized.</p>
       </div>
 
@@ -327,7 +327,7 @@ const Incidents = () => {
 
       <div className="content-card">
         <div className="card-header">
-          <h3>🛡️ Security Operations Center</h3>
+          <h3>Security Operations Center</h3>
           <div className="controls">
             <Space>
               <Select

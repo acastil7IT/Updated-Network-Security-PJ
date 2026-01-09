@@ -159,7 +159,7 @@ const Dashboard = () => {
       <Row gutter={16}>
         {/* Threat Intelligence Chart */}
         <Col span={16}>
-          <Card title="🔥 Threat Activity Timeline" loading={loading}>
+          <Card title="Threat Activity Timeline" loading={loading}>
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={stats.incident_trends}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(52, 65, 85, 0.3)" />
@@ -188,7 +188,7 @@ const Dashboard = () => {
 
         {/* Network Intelligence */}
         <Col span={8}>
-          <Card title="🎯 Source Intelligence" loading={loading}>
+          <Card title="Source Intelligence" loading={loading}>
             <Table
               dataSource={stats.top_source_ips}
               columns={[
@@ -348,7 +348,7 @@ const Dashboard = () => {
       {/* System Health */}
       <Row gutter={16} style={{ marginTop: 24 }}>
         <Col span={24}>
-          <Card title="⚡ System Health Matrix">
+          <Card title="System Health Matrix">
             <Row gutter={16}>
               <Col span={6}>
                 <div className="stat-card">
