@@ -9,6 +9,7 @@ import {
   SecurityScanOutlined
 } from '@ant-design/icons';
 import axios from 'axios';
+import mockApi from '../services/mockApi';
 import moment from 'moment';
 
 const NetworkTraffic = () => {
@@ -25,18 +26,35 @@ const NetworkTraffic = () => {
   const fetchTraffic = async (sourceIP = null) => {
     try {
       setLoading(true);
-      const params = new URLSearchParams();
-      if (sourceIP) params.append('source_ip', sourceIP);
-      params.append('limit', '200');
+      
+      // Try to fetch from real API first
+      try {
+        const params = new URLSearchParams();
+        if (sourceIP) params.append('source_ip', sourceIP);
+        params.append('limit', '200');
 
-      const response = await axios.get(`http://localhost:8001/api/traffic?${params}`, {
-        headers: {
-          'Authorization': 'Bearer demo-token'
-        }
+        const response = await axios.get(`http://localhost:8001/api/traffic?${params}`, {
+          headers: {
+            'Authorization': 'Bearer demo-token'
+          }
+        });
+        setTraffic(response.data);
+        return;
+      } catch (apiError) {
+        console.log('Real API unavailable, using mock data for cloud deployment');
+      }
+      
+      // Fallback to mock data for cloud deployment
+      const mockData = await mockApi.getTraffic({
+        source_ip: sourceIP,
+        limit: 200
       });
-      setTraffic(response.data);
+      setTraffic(mockData);
+      
     } catch (error) {
       console.error('Traffic fetch error:', error);
+      // Even if mock fails, set empty array to prevent loading forever
+      setTraffic([]);
     } finally {
       setLoading(false);
     }

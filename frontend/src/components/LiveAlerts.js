@@ -9,6 +9,7 @@ import {
   EyeOutlined
 } from '@ant-design/icons';
 import axios from 'axios';
+import mockApi from '../services/mockApi';
 import moment from 'moment';
 
 const LiveAlerts = () => {
@@ -31,14 +32,27 @@ const LiveAlerts = () => {
 
   const fetchLiveAlerts = async () => {
     try {
-      const response = await axios.get('http://localhost:8001/api/alerts/live', {
-        headers: {
-          'Authorization': 'Bearer demo-token'
-        }
-      });
-      setAlerts(response.data.alerts || []);
+      // Try to fetch from real API first
+      try {
+        const response = await axios.get('http://localhost:8001/api/alerts/live', {
+          headers: {
+            'Authorization': 'Bearer demo-token'
+          }
+        });
+        setAlerts(response.data.alerts || []);
+        return;
+      } catch (apiError) {
+        console.log('Real API unavailable, using mock data for cloud deployment');
+      }
+      
+      // Fallback to mock data for cloud deployment
+      const mockData = await mockApi.getLiveAlerts();
+      setAlerts(mockData.alerts || []);
+      
     } catch (error) {
       console.error('Live alerts fetch error:', error);
+      // Set empty array to prevent loading forever
+      setAlerts([]);
     } finally {
       setLoading(false);
     }

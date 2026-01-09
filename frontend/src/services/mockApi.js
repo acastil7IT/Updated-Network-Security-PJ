@@ -130,8 +130,8 @@ export const mockApi = {
     return Promise.resolve(filtered.slice(0, params.limit || 100));
   },
   getLiveAlerts: () => Promise.resolve(mockAlerts),
-  acknowledgeIncident: (id) => Promise.resolve({ message: 'Incident acknowledged successfully' }),
-  resolveIncident: (id) => Promise.resolve({ message: 'Incident resolved successfully' })
+  acknowledgeIncident: () => Promise.resolve({ message: 'Incident acknowledged successfully' }),
+  resolveIncident: () => Promise.resolve({ message: 'Incident resolved successfully' })
 };
 
 export default mockApi;
