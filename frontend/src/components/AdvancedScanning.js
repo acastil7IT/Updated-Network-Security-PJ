@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Button, Select, Input, Table, Tag, Progress, Alert, Tabs, Badge, Tooltip } from 'antd';
+import { Table, Tag, Button, Select, Input, Progress, Tabs, Badge, Tooltip } from 'antd';
 import { 
   ScanOutlined, 
   BugOutlined, 
