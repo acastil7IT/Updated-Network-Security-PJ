@@ -4,8 +4,8 @@ import {
   WifiOutlined, 
   LaptopOutlined, 
   MobileOutlined,
-  RouterOutlined,
-  ServerOutlined,
+  ApiOutlined,
+  CloudServerOutlined,
   ReloadOutlined,
   EyeOutlined,
   WarningOutlined,
@@ -71,9 +71,9 @@ const NetworkDiscovery = () => {
     const type = (deviceType || '').toLowerCase();
     
     if (type.includes('router') || type.includes('gateway')) {
-      return <RouterOutlined style={{ color: '#1890ff' }} />;
+      return <ApiOutlined style={{ color: '#1890ff' }} />;
     } else if (type.includes('server')) {
-      return <ServerOutlined style={{ color: '#52c41a' }} />;
+      return <CloudServerOutlined style={{ color: '#52c41a' }} />;
     } else if (type.includes('mobile') || type.includes('phone')) {
       return <MobileOutlined style={{ color: '#722ed1' }} />;
     } else if (type.includes('computer') || type.includes('laptop')) {
@@ -236,7 +236,7 @@ const NetworkDiscovery = () => {
         <Col span={6}>
           <Card>
             <div style={{ textAlign: 'center' }}>
-              <RouterOutlined style={{ fontSize: 24, color: '#722ed1' }} />
+              <ApiOutlined style={{ fontSize: 24, color: '#722ed1' }} />
               <div style={{ fontSize: 20, fontWeight: 'bold', marginTop: 8 }}>
                 {stats.new_today}
               </div>

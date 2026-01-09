@@ -6,6 +6,8 @@ RUN apt-get update && apt-get install -y \
     arp-scan \
     net-tools \
     iputils-ping \
+    gcc \
+    python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app

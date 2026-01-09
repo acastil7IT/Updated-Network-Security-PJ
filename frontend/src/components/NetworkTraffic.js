@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Input, Button, Space, Tag } from 'antd';
-import { SearchOutlined, ReloadOutlined } from '@ant-design/icons';
+import { Table, Input, Button, Space, Tag, Card, Row, Col, Statistic, Alert } from 'antd';
+import { 
+  SearchOutlined, 
+  ReloadOutlined, 
+  GlobalOutlined,
+  ThunderboltOutlined,
+  CloudServerOutlined,
+  SecurityScanOutlined
+} from '@ant-design/icons';
 import axios from 'axios';
 import moment from 'moment';
 
@@ -41,12 +48,12 @@ const NetworkTraffic = () => {
 
   const getProtocolColor = (protocol) => {
     const colors = {
-      'TCP': 'blue',
-      'UDP': 'green',
-      'ICMP': 'orange',
-      'OTHER': 'default'
+      'TCP': '#1890ff',
+      'UDP': '#52c41a', 
+      'ICMP': '#faad14',
+      'OTHER': '#d9d9d9'
     };
-    return colors[protocol] || 'default';
+    return colors[protocol] || '#d9d9d9';
   };
 
   const formatBytes = (bytes) => {
@@ -70,6 +77,17 @@ const NetworkTraffic = () => {
       dataIndex: 'source_ip',
       key: 'source_ip',
       width: 120,
+      render: (ip) => (
+        <code style={{ 
+          background: 'rgba(24, 144, 255, 0.1)', 
+          padding: '2px 6px', 
+          borderRadius: '4px',
+          color: '#1890ff',
+          fontWeight: '600'
+        }}>
+          {ip}
+        </code>
+      )
     },
     {
       title: 'Source Port',
@@ -82,6 +100,17 @@ const NetworkTraffic = () => {
       dataIndex: 'dest_ip',
       key: 'dest_ip',
       width: 120,
+      render: (ip) => (
+        <code style={{ 
+          background: 'rgba(82, 196, 26, 0.1)', 
+          padding: '2px 6px', 
+          borderRadius: '4px',
+          color: '#52c41a',
+          fontWeight: '600'
+        }}>
+          {ip}
+        </code>
+      )
     },
     {
       title: 'Dest Port',
@@ -94,7 +123,16 @@ const NetworkTraffic = () => {
       dataIndex: 'protocol',
       key: 'protocol',
       render: (protocol) => (
-        <Tag color={getProtocolColor(protocol)}>{protocol}</Tag>
+        <Tag 
+          color={getProtocolColor(protocol)}
+          style={{ 
+            color: 'white', 
+            fontWeight: '600',
+            border: 'none'
+          }}
+        >
+          {protocol}
+        </Tag>
       ),
       width: 80,
     },
@@ -110,49 +148,105 @@ const NetworkTraffic = () => {
 
   return (
     <div>
-      <div style={{ marginBottom: 16 }}>
-        <Space>
-          <Input
-            placeholder="Search by Source IP"
-            value={searchIP}
-            onChange={(e) => setSearchIP(e.target.value)}
-            onPressEnter={handleSearch}
-            style={{ width: 200 }}
-          />
-          <Button 
-            type="primary" 
-            icon={<SearchOutlined />}
-            onClick={handleSearch}
-          >
-            Search
-          </Button>
-          <Button 
-            icon={<ReloadOutlined />}
-            onClick={() => {
-              setSearchIP('');
-              fetchTraffic();
-            }}
-          >
-            Clear & Refresh
-          </Button>
-        </Space>
-      </div>
+      {/* Network Monitoring Overview */}
+      <Row gutter={16} style={{ marginBottom: 24 }}>
+        <Col span={6}>
+          <div className="stat-card">
+            <div className="stat-icon">
+              <GlobalOutlined />
+            </div>
+            <div className="stat-value">{traffic.length}</div>
+            <div className="stat-label">Live Packets</div>
+          </div>
+        </Col>
+        <Col span={6}>
+          <div className="stat-card">
+            <div className="stat-icon">
+              <ThunderboltOutlined />
+            </div>
+            <div className="stat-value">
+              {traffic.filter(t => t.protocol === 'TCP').length}
+            </div>
+            <div className="stat-label">TCP Connections</div>
+          </div>
+        </Col>
+        <Col span={6}>
+          <div className="stat-card">
+            <div className="stat-icon">
+              <CloudServerOutlined />
+            </div>
+            <div className="stat-value">
+              {traffic.filter(t => t.protocol === 'UDP').length}
+            </div>
+            <div className="stat-label">UDP Packets</div>
+          </div>
+        </Col>
+        <Col span={6}>
+          <div className="stat-card">
+            <div className="stat-icon">
+              <SecurityScanOutlined />
+            </div>
+            <div className="stat-value">
+              {new Set(traffic.map(t => t.source_ip)).size}
+            </div>
+            <div className="stat-label">Unique Sources</div>
+          </div>
+        </Col>
+      </Row>
 
-      <Table
-        columns={columns}
-        dataSource={traffic}
-        loading={loading}
-        rowKey="id"
-        pagination={{
-          pageSize: 50,
-          showSizeChanger: true,
-          showQuickJumper: true,
-          showTotal: (total, range) => 
-            `${range[0]}-${range[1]} of ${total} packets`,
-        }}
-        scroll={{ x: 800 }}
-        size="small"
-      />
+      <Card title="📡 Network Traffic Monitor">
+        <Alert
+          message="Real-Time Network Analysis"
+          description="Monitor live network traffic across your infrastructure. Traffic is automatically captured and analyzed for security patterns."
+          type="info"
+          showIcon
+          style={{ marginBottom: 16 }}
+        />
+
+        <div style={{ marginBottom: 16 }}>
+          <Space>
+            <Input
+              placeholder="Search by Source IP"
+              value={searchIP}
+              onChange={(e) => setSearchIP(e.target.value)}
+              onPressEnter={handleSearch}
+              style={{ width: 200 }}
+            />
+            <Button 
+              type="primary" 
+              icon={<SearchOutlined />}
+              onClick={handleSearch}
+            >
+              Search Traffic
+            </Button>
+            <Button 
+              icon={<ReloadOutlined />}
+              onClick={() => {
+                setSearchIP('');
+                fetchTraffic();
+              }}
+            >
+              Clear & Refresh
+            </Button>
+          </Space>
+        </div>
+
+        <Table
+          columns={columns}
+          dataSource={traffic}
+          loading={loading}
+          rowKey="id"
+          pagination={{
+            pageSize: 50,
+            showSizeChanger: true,
+            showQuickJumper: true,
+            showTotal: (total, range) => 
+              `${range[0]}-${range[1]} of ${total} packets`,
+          }}
+          scroll={{ x: 800 }}
+          size="small"
+        />
+      </Card>
     </div>
   );
 };

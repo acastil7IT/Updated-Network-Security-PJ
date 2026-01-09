@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
-import { Card, Row, Col, Button, Select, Input, Table, Tag, Progress, Alert, Tabs } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Card, Row, Col, Button, Select, Input, Table, Tag, Progress, Alert, Tabs, Badge, Tooltip } from 'antd';
 import { 
   ScanOutlined, 
   BugOutlined, 
   GlobalOutlined,
   SecurityScanOutlined,
   PlayCircleOutlined,
-  StopOutlined
+  StopOutlined,
+  LaptopOutlined,
+  MobileOutlined,
+  DesktopOutlined,
+  CloudServerOutlined,
+  WifiOutlined,
+  ApiOutlined
 } from '@ant-design/icons';
 import axios from 'axios';
 
@@ -20,6 +26,91 @@ const AdvancedScanning = () => {
   const [selectedTarget, setSelectedTarget] = useState('localhost');
   const [scanType, setScanType] = useState('comprehensive');
   const [recentScans, setRecentScans] = useState([]);
+  const [networkDevices, setNetworkDevices] = useState([]);
+  const [devicesLoading, setDevicesLoading] = useState(false);
+  const [deviceStats, setDeviceStats] = useState({
+    total: 0,
+    online: 0,
+    offline: 0,
+    new_today: 0
+  });
+
+  // Load network devices on component mount
+  useEffect(() => {
+    loadNetworkDevices();
+  }, []);
+
+  const loadNetworkDevices = async () => {
+    setDevicesLoading(true);
+    try {
+      const response = await axios.get('http://localhost:8001/api/network/devices', {
+        headers: { 'Authorization': 'Bearer demo-token' }
+      });
+      
+      setNetworkDevices(response.data.devices || []);
+      setDeviceStats(response.data.stats || {
+        total: 0,
+        online: 0,
+        offline: 0,
+        new_today: 0
+      });
+    } catch (error) {
+      console.error('Failed to load network devices:', error);
+      // Fallback to mock data for demo
+      const mockDevices = [
+        {
+          id: 1,
+          ip_address: '192.168.1.1',
+          hostname: 'router.local',
+          device_type: 'Router/Gateway',
+          vendor: 'Netgear',
+          is_online: true,
+          risk_score: 2,
+          open_ports: ['80', '443', '22'],
+          last_seen: new Date().toISOString()
+        },
+        {
+          id: 2,
+          ip_address: '192.168.1.100',
+          hostname: 'workstation-01',
+          device_type: 'Windows Computer',
+          vendor: 'Dell Inc.',
+          is_online: true,
+          risk_score: 3,
+          open_ports: ['135', '139', '445'],
+          last_seen: new Date().toISOString()
+        }
+      ];
+      setNetworkDevices(mockDevices);
+      setDeviceStats({ total: 2, online: 2, offline: 0, new_today: 1 });
+    } finally {
+      setDevicesLoading(false);
+    }
+  };
+
+  const getDeviceIcon = (deviceType) => {
+    const type = deviceType?.toLowerCase() || '';
+    if (type.includes('router') || type.includes('gateway')) return <ApiOutlined />;
+    if (type.includes('server')) return <CloudServerOutlined />;
+    if (type.includes('mobile') || type.includes('phone')) return <MobileOutlined />;
+    if (type.includes('laptop') || type.includes('mac')) return <LaptopOutlined />;
+    if (type.includes('iot') || type.includes('smart')) return <WifiOutlined />;
+    return <DesktopOutlined />;
+  };
+
+  const getRiskColor = (riskScore) => {
+    if (riskScore >= 7) return 'red';
+    if (riskScore >= 4) return 'orange';
+    if (riskScore >= 2) return 'yellow';
+    return 'green';
+  };
+
+  const getRiskLevel = (riskScore) => {
+    if (riskScore >= 7) return 'HIGH';
+    if (riskScore >= 4) return 'MEDIUM';
+    if (riskScore >= 2) return 'LOW';
+    return 'MINIMAL';
+  };
 
   const scanTypes = [
     { value: 'comprehensive', label: 'Comprehensive Scan', description: 'Full port scan + vulnerability assessment' },
@@ -259,6 +350,101 @@ const AdvancedScanning = () => {
     }
   ];
 
+  const deviceColumns = [
+    {
+      title: 'Device',
+      key: 'device',
+      render: (_, record) => (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          {getDeviceIcon(record.device_type)}
+          <div>
+            <div style={{ fontWeight: 'bold' }}>
+              {record.hostname || record.ip_address}
+            </div>
+            <div style={{ fontSize: '12px', color: '#666' }}>
+              {record.ip_address}
+            </div>
+          </div>
+        </div>
+      ),
+      width: '25%'
+    },
+    {
+      title: 'Type',
+      dataIndex: 'device_type',
+      key: 'device_type',
+      render: (type) => (
+        <Tag color="blue">{type || 'Unknown'}</Tag>
+      ),
+      width: '15%'
+    },
+    {
+      title: 'Vendor',
+      dataIndex: 'vendor',
+      key: 'vendor',
+      render: (vendor) => vendor || 'Unknown',
+      width: '15%'
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      render: (_, record) => (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Badge 
+            status={record.is_online ? 'success' : 'error'} 
+            text={record.is_online ? 'Online' : 'Offline'} 
+          />
+        </div>
+      ),
+      width: '12%'
+    },
+    {
+      title: 'Open Ports',
+      dataIndex: 'open_ports',
+      key: 'open_ports',
+      render: (ports) => (
+        <div>
+          {(ports || []).slice(0, 3).map(port => (
+            <Tag key={port} size="small" color="geekblue">{port}</Tag>
+          ))}
+          {(ports || []).length > 3 && (
+            <Tooltip title={`All ports: ${(ports || []).join(', ')}`}>
+              <Tag size="small">+{(ports || []).length - 3}</Tag>
+            </Tooltip>
+          )}
+        </div>
+      ),
+      width: '18%'
+    },
+    {
+      title: 'Risk Level',
+      key: 'risk',
+      render: (_, record) => (
+        <Tag color={getRiskColor(record.risk_score || 0)}>
+          {getRiskLevel(record.risk_score || 0)}
+        </Tag>
+      ),
+      width: '10%'
+    },
+    {
+      title: 'Last Seen',
+      dataIndex: 'last_seen',
+      key: 'last_seen',
+      render: (lastSeen) => {
+        if (!lastSeen) return 'Never';
+        const date = new Date(lastSeen);
+        const now = new Date();
+        const diffMinutes = Math.floor((now - date) / (1000 * 60));
+        
+        if (diffMinutes < 1) return 'Just now';
+        if (diffMinutes < 60) return `${diffMinutes}m ago`;
+        if (diffMinutes < 1440) return `${Math.floor(diffMinutes / 60)}h ago`;
+        return `${Math.floor(diffMinutes / 1440)}d ago`;
+      },
+      width: '15%'
+    }
+  ];
+
   return (
     <div>
       <Alert
@@ -330,9 +516,9 @@ const AdvancedScanning = () => {
         </Col>
 
         <Col span={16}>
-          <Card title="📊 Scan Statistics" size="small">
+          <Card title="📊 Network Statistics" size="small">
             <Row gutter={16}>
-              <Col span={6}>
+              <Col span={4}>
                 <div style={{ textAlign: 'center' }}>
                   <ScanOutlined style={{ fontSize: 24, color: '#1890ff' }} />
                   <div style={{ fontSize: 20, fontWeight: 'bold' }}>
@@ -341,7 +527,7 @@ const AdvancedScanning = () => {
                   <div>Total Scans</div>
                 </div>
               </Col>
-              <Col span={6}>
+              <Col span={4}>
                 <div style={{ textAlign: 'center' }}>
                   <BugOutlined style={{ fontSize: 24, color: '#f5222d' }} />
                   <div style={{ fontSize: 20, fontWeight: 'bold' }}>
@@ -350,22 +536,40 @@ const AdvancedScanning = () => {
                   <div>High Risk</div>
                 </div>
               </Col>
-              <Col span={6}>
+              <Col span={4}>
                 <div style={{ textAlign: 'center' }}>
                   <GlobalOutlined style={{ fontSize: 24, color: '#52c41a' }} />
                   <div style={{ fontSize: 20, fontWeight: 'bold' }}>
-                    {scanResults.filter(r => r.finding.includes('Open Port')).length}
+                    {deviceStats.online}
                   </div>
-                  <div>Open Ports</div>
+                  <div>Online Devices</div>
                 </div>
               </Col>
-              <Col span={6}>
+              <Col span={4}>
                 <div style={{ textAlign: 'center' }}>
-                  <SecurityScanOutlined style={{ fontSize: 24, color: '#722ed1' }} />
+                  <DesktopOutlined style={{ fontSize: 24, color: '#722ed1' }} />
                   <div style={{ fontSize: 20, fontWeight: 'bold' }}>
-                    {scanResults.length}
+                    {deviceStats.total}
                   </div>
-                  <div>Total Findings</div>
+                  <div>Total Devices</div>
+                </div>
+              </Col>
+              <Col span={4}>
+                <div style={{ textAlign: 'center' }}>
+                  <SecurityScanOutlined style={{ fontSize: 24, color: '#fa8c16' }} />
+                  <div style={{ fontSize: 20, fontWeight: 'bold' }}>
+                    {networkDevices.filter(d => (d.risk_score || 0) >= 4).length}
+                  </div>
+                  <div>Risk Devices</div>
+                </div>
+              </Col>
+              <Col span={4}>
+                <div style={{ textAlign: 'center' }}>
+                  <WifiOutlined style={{ fontSize: 24, color: '#13c2c2' }} />
+                  <div style={{ fontSize: 20, fontWeight: 'bold' }}>
+                    {deviceStats.new_today}
+                  </div>
+                  <div>New Today</div>
                 </div>
               </Col>
             </Row>
@@ -373,7 +577,73 @@ const AdvancedScanning = () => {
         </Col>
       </Row>
 
-      <Tabs defaultActiveKey="results">
+      <Tabs defaultActiveKey="devices">
+        <TabPane tab={
+          <span>
+            🌐 Network Devices 
+            <Badge count={deviceStats.total} style={{ marginLeft: 8 }} />
+          </span>
+        } key="devices">
+          <Card 
+            title="Discovered Network Devices" 
+            extra={
+              <Button 
+                icon={<ScanOutlined />} 
+                onClick={loadNetworkDevices}
+                loading={devicesLoading}
+              >
+                Refresh
+              </Button>
+            }
+          >
+            <div style={{ marginBottom: 16 }}>
+              <Row gutter={16}>
+                <Col span={6}>
+                  <Card size="small" style={{ textAlign: 'center' }}>
+                    <div style={{ color: '#52c41a', fontSize: 18, fontWeight: 'bold' }}>
+                      {deviceStats.online}
+                    </div>
+                    <div>Online</div>
+                  </Card>
+                </Col>
+                <Col span={6}>
+                  <Card size="small" style={{ textAlign: 'center' }}>
+                    <div style={{ color: '#f5222d', fontSize: 18, fontWeight: 'bold' }}>
+                      {deviceStats.offline}
+                    </div>
+                    <div>Offline</div>
+                  </Card>
+                </Col>
+                <Col span={6}>
+                  <Card size="small" style={{ textAlign: 'center' }}>
+                    <div style={{ color: '#fa8c16', fontSize: 18, fontWeight: 'bold' }}>
+                      {networkDevices.filter(d => (d.risk_score || 0) >= 4).length}
+                    </div>
+                    <div>High Risk</div>
+                  </Card>
+                </Col>
+                <Col span={6}>
+                  <Card size="small" style={{ textAlign: 'center' }}>
+                    <div style={{ color: '#1890ff', fontSize: 18, fontWeight: 'bold' }}>
+                      {deviceStats.new_today}
+                    </div>
+                    <div>New Today</div>
+                  </Card>
+                </Col>
+              </Row>
+            </div>
+            
+            <Table
+              columns={deviceColumns}
+              dataSource={networkDevices}
+              loading={devicesLoading}
+              pagination={{ pageSize: 10 }}
+              size="small"
+              rowKey="id"
+            />
+          </Card>
+        </TabPane>
+
         <TabPane tab="🔍 Scan Results" key="results">
           <Card title="Latest Scan Results">
             {scanResults.length > 0 ? (

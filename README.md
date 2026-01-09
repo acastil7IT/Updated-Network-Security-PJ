@@ -62,6 +62,14 @@ The setup script will:
 - **Protocol Analysis**: TCP, UDP, ICMP packet inspection
 - **Port Scan Detection**: Automated scanning behavior identification
 - **Anomaly Detection**: ML-based unusual traffic pattern detection
+- **Device Discovery**: Automatic network device identification and monitoring
+
+### Device Management
+- **Network Scanning**: Continuous discovery of devices on local networks
+- **Device Classification**: Automatic identification of device types (routers, servers, IoT devices)
+- **Risk Assessment**: Automated security risk scoring for discovered devices
+- **Service Detection**: Identification of running services and open ports
+- **Vendor Identification**: MAC address-based vendor detection
 
 ### Threat Detection
 - **Signature-based Detection**: Known threat pattern matching
@@ -88,6 +96,8 @@ The setup script will:
 - Incident trend reporting
 - Top source IP identification
 - Protocol distribution charts
+- Network device inventory and monitoring
+- Device risk assessment and classification
 
 ### Management
 - Incident acknowledgment and resolution

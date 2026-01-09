@@ -1,6 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Table, Tag, Button, Space, Modal, Select, message } from 'antd';
-import { ExclamationCircleOutlined, CheckOutlined } from '@ant-design/icons';
+import { Table, Tag, Button, Space, Modal, Select, message, Card, Row, Col, Statistic, Alert } from 'antd';
+import { 
+  ExclamationCircleOutlined, 
+  CheckOutlined, 
+  SafetyOutlined,
+  AlertOutlined,
+  BugOutlined,
+  SecurityScanOutlined,
+  ReloadOutlined
+} from '@ant-design/icons';
 import mockApi from '../services/mockApi';
 import moment from 'moment';
 
@@ -64,21 +72,21 @@ const Incidents = () => {
 
   const getSeverityColor = (severity) => {
     const colors = {
-      'LOW': 'green',
-      'MEDIUM': 'orange',
-      'HIGH': 'red',
-      'CRITICAL': 'purple'
+      'LOW': '#52c41a',
+      'MEDIUM': '#faad14', 
+      'HIGH': '#ff4d4f',
+      'CRITICAL': '#722ed1'
     };
-    return colors[severity] || 'default';
+    return colors[severity] || '#d9d9d9';
   };
 
   const getStatusColor = (status) => {
     const colors = {
-      'OPEN': 'red',
-      'ACKNOWLEDGED': 'orange',
-      'RESOLVED': 'green'
+      'OPEN': '#ff4d4f',
+      'ACKNOWLEDGED': '#faad14',
+      'RESOLVED': '#52c41a'
     };
-    return colors[status] || 'default';
+    return colors[status] || '#d9d9d9';
   };
 
   const columns = [
@@ -100,7 +108,16 @@ const Incidents = () => {
       dataIndex: 'severity',
       key: 'severity',
       render: (severity) => (
-        <Tag color={getSeverityColor(severity)}>{severity}</Tag>
+        <Tag 
+          color={getSeverityColor(severity)} 
+          style={{ 
+            color: 'white', 
+            fontWeight: '600',
+            border: 'none'
+          }}
+        >
+          {severity}
+        </Tag>
       ),
       filters: [
         { text: 'Critical', value: 'CRITICAL' },
@@ -118,6 +135,17 @@ const Incidents = () => {
       title: 'Source IP',
       dataIndex: 'source_ip',
       key: 'source_ip',
+      render: (ip) => (
+        <code style={{ 
+          background: 'rgba(24, 144, 255, 0.1)', 
+          padding: '2px 6px', 
+          borderRadius: '4px',
+          color: '#1890ff',
+          fontWeight: '600'
+        }}>
+          {ip}
+        </code>
+      )
     },
     {
       title: 'Description',
@@ -130,7 +158,16 @@ const Incidents = () => {
       dataIndex: 'status',
       key: 'status',
       render: (status) => (
-        <Tag color={getStatusColor(status)}>{status}</Tag>
+        <Tag 
+          color={getStatusColor(status)}
+          style={{ 
+            color: 'white', 
+            fontWeight: '600',
+            border: 'none'
+          }}
+        >
+          {status}
+        </Tag>
       ),
       filters: [
         { text: 'Open', value: 'OPEN' },
@@ -176,45 +213,105 @@ const Incidents = () => {
 
   return (
     <div>
-      <div style={{ marginBottom: 16 }}>
-        <Space>
-          <Select
-            placeholder="Filter by Severity"
-            style={{ width: 150 }}
-            allowClear
-            onChange={(value) => setFilters({ ...filters, severity: value })}
-          >
-            <Option value="CRITICAL">Critical</Option>
-            <Option value="HIGH">High</Option>
-            <Option value="MEDIUM">Medium</Option>
-            <Option value="LOW">Low</Option>
-          </Select>
-          <Select
-            placeholder="Filter by Status"
-            style={{ width: 150 }}
-            allowClear
-            onChange={(value) => setFilters({ ...filters, status: value })}
-          >
-            <Option value="OPEN">Open</Option>
-            <Option value="ACKNOWLEDGED">Acknowledged</Option>
-            <Option value="RESOLVED">Resolved</Option>
-          </Select>
-          <Button onClick={fetchIncidents}>Refresh</Button>
-        </Space>
-      </div>
+      {/* Threat Intelligence Overview */}
+      <Row gutter={16} style={{ marginBottom: 24 }}>
+        <Col span={6}>
+          <div className="stat-card">
+            <div className="stat-icon">
+              <AlertOutlined />
+            </div>
+            <div className="stat-value">
+              {incidents.filter(i => i.status === 'OPEN').length}
+            </div>
+            <div className="stat-label">Active Threats</div>
+          </div>
+        </Col>
+        <Col span={6}>
+          <div className="stat-card">
+            <div className="stat-icon">
+              <BugOutlined />
+            </div>
+            <div className="stat-value">
+              {incidents.filter(i => i.severity === 'CRITICAL' || i.severity === 'HIGH').length}
+            </div>
+            <div className="stat-label">Critical/High</div>
+          </div>
+        </Col>
+        <Col span={6}>
+          <div className="stat-card">
+            <div className="stat-icon">
+              <SecurityScanOutlined />
+            </div>
+            <div className="stat-value">
+              {incidents.filter(i => i.status === 'ACKNOWLEDGED').length}
+            </div>
+            <div className="stat-label">Under Investigation</div>
+          </div>
+        </Col>
+        <Col span={6}>
+          <div className="stat-card">
+            <div className="stat-icon">
+              <SafetyOutlined />
+            </div>
+            <div className="stat-value">
+              {incidents.filter(i => i.status === 'RESOLVED').length}
+            </div>
+            <div className="stat-label">Resolved</div>
+          </div>
+        </Col>
+      </Row>
 
-      <Table
-        columns={columns}
-        dataSource={incidents}
-        loading={loading}
-        rowKey="id"
-        pagination={{
-          pageSize: 20,
-          showSizeChanger: true,
-          showQuickJumper: true,
-        }}
-        scroll={{ x: 1200 }}
-      />
+      <Card title="🎯 Threat Intelligence Dashboard">
+        <Alert
+          message="Security Operations Center"
+          description="Monitor and respond to security incidents across your network infrastructure. All incidents are automatically classified and prioritized."
+          type="info"
+          showIcon
+          style={{ marginBottom: 16 }}
+        />
+
+        <div style={{ marginBottom: 16 }}>
+          <Space>
+            <Select
+              placeholder="Filter by Severity"
+              style={{ width: 150 }}
+              allowClear
+              onChange={(value) => setFilters({ ...filters, severity: value })}
+            >
+              <Option value="CRITICAL">Critical</Option>
+              <Option value="HIGH">High</Option>
+              <Option value="MEDIUM">Medium</Option>
+              <Option value="LOW">Low</Option>
+            </Select>
+            <Select
+              placeholder="Filter by Status"
+              style={{ width: 150 }}
+              allowClear
+              onChange={(value) => setFilters({ ...filters, status: value })}
+            >
+              <Option value="OPEN">Open</Option>
+              <Option value="ACKNOWLEDGED">Acknowledged</Option>
+              <Option value="RESOLVED">Resolved</Option>
+            </Select>
+            <Button onClick={fetchIncidents} icon={<ReloadOutlined />}>
+              Refresh Intelligence
+            </Button>
+          </Space>
+        </div>
+
+        <Table
+          columns={columns}
+          dataSource={incidents}
+          loading={loading}
+          rowKey="id"
+          pagination={{
+            pageSize: 20,
+            showSizeChanger: true,
+            showQuickJumper: true,
+          }}
+          scroll={{ x: 1200 }}
+        />
+      </Card>
     </div>
   );
 };

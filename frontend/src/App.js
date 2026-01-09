@@ -1,13 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Layout, Menu, theme } from 'antd';
+import { Layout, Menu } from 'antd';
 import {
   DashboardOutlined,
   AlertOutlined,
   GlobalOutlined,
   SecurityScanOutlined,
   BugOutlined,
-  WifiOutlined
+  WifiOutlined,
+  SafetyOutlined
 } from '@ant-design/icons';
 
 import Dashboard from './components/Dashboard';
@@ -22,70 +23,60 @@ import './App.css';
 const { Header, Sider, Content } = Layout;
 
 function App() {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
-
   const menuItems = [
     {
       key: '/',
       icon: <DashboardOutlined />,
-      label: 'Dashboard',
+      label: 'Command Center',
     },
     {
       key: '/incidents',
       icon: <AlertOutlined />,
-      label: 'Security Incidents',
+      label: 'Threat Intelligence',
     },
     {
       key: '/traffic',
       icon: <GlobalOutlined />,
-      label: 'Network Traffic',
+      label: 'Network Monitor',
     },
     {
       key: '/alerts',
       icon: <SecurityScanOutlined />,
-      label: 'Live Alerts',
+      label: 'Live Threats',
     },
     {
       key: '/advanced-scanning',
       icon: <BugOutlined />,
-      label: 'Advanced Scanning',
+      label: 'Cyber Arsenal',
     },
     {
       key: '/network-discovery',
       icon: <WifiOutlined />,
-      label: 'Network Discovery',
+      label: 'Asset Discovery',
     },
   ];
 
   return (
     <Router>
-      <Layout style={{ minHeight: '100vh' }}>
+      <Layout className="securenet-layout" style={{ minHeight: '100vh' }}>
         {/* Demo Banner */}
-        <div style={{ 
-          background: 'linear-gradient(90deg, #1890ff, #722ed1)', 
-          color: 'white', 
-          padding: '8px 16px', 
-          textAlign: 'center',
-          fontSize: '14px',
-          fontWeight: 'bold'
-        }}>
-          🛡️ SecureNet Monitor - Live Demo | Portfolio Project by Alejandro Castillo | Mock Data Only
+        <div className="demo-banner">
+          <SafetyOutlined style={{ marginRight: 8 }} />
+          SecureNet Monitor v2.1 | Live Network Security Platform | Alejandro Castillo - Cybersecurity Portfolio
         </div>
+        
         <Sider
+          className="securenet-sider"
+          width={200}
           breakpoint="lg"
           collapsedWidth="0"
-          style={{
-            background: colorBgContainer,
-          }}
         >
-        <div className="logo">
-            <SecurityScanOutlined style={{ fontSize: '24px', color: '#1890ff' }} />
-            <span style={{ marginLeft: '8px', fontWeight: 'bold' }}>SecureNet</span>
+          <div className="logo">
+            <SafetyOutlined style={{ fontSize: '24px', color: 'white' }} />
+            <span className="logo-text">SecureNet</span>
           </div>
           <Menu
-            theme="light"
+            className="securenet-menu"
             mode="inline"
             defaultSelectedKeys={['/']}
             items={menuItems}
@@ -94,31 +85,15 @@ function App() {
             }}
           />
         </Sider>
+        
         <Layout>
-          <Header
-            style={{
-              padding: 0,
-              background: colorBgContainer,
-              borderBottom: '1px solid #f0f0f0',
-            }}
-          >
-            <div style={{ 
-              padding: '0 24px', 
-              fontSize: '18px', 
-              fontWeight: 'bold',
-              color: '#1890ff'
-            }}>
-              Network Security Monitoring Platform
+          <Header className="securenet-header">
+            <div className="header-title">
+              Network Security Operations Center
             </div>
           </Header>
-          <Content
-            style={{
-              margin: '24px 16px',
-              padding: 24,
-              minHeight: 280,
-              background: colorBgContainer,
-            }}
-          >
+          
+          <Content className="securenet-content">
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/incidents" element={<Incidents />} />

@@ -9,7 +9,6 @@ import asyncpg
 import json
 import logging
 import nmap
-import netifaces
 import os
 import re
 import subprocess
@@ -45,27 +44,28 @@ class NetworkDiscovery:
         """Get local network ranges to scan"""
         networks = []
         try:
-            # Get all network interfaces
-            interfaces = netifaces.interfaces()
-            
-            for interface in interfaces:
-                addrs = netifaces.ifaddresses(interface)
-                
-                # Check for IPv4 addresses
-                if netifaces.AF_INET in addrs:
-                    for addr_info in addrs[netifaces.AF_INET]:
-                        ip = addr_info.get('addr')
-                        netmask = addr_info.get('netmask')
-                        
-                        if ip and netmask and not ip.startswith('127.'):
-                            # Calculate network range
-                            network = self.calculate_network(ip, netmask)
-                            if network:
-                                networks.append(network)
-                                
+            # Use ip route to get network interfaces
+            result = subprocess.run(['ip', 'route'], capture_output=True, text=True)
+            if result.returncode == 0:
+                for line in result.stdout.split('\n'):
+                    if 'src' in line and '/' in line:
+                        # Extract network from route line
+                        parts = line.split()
+                        for part in parts:
+                            if '/' in part and not part.startswith('169.254'):
+                                try:
+                                    import ipaddress
+                                    network = ipaddress.IPv4Network(part, strict=False)
+                                    if not network.is_loopback and not network.is_link_local:
+                                        networks.append(str(network))
+                                except:
+                                    continue
+                                    
         except Exception as e:
             logger.error(f"Error getting local networks: {e}")
-            # Fallback to common ranges
+            
+        # Fallback to common ranges if nothing found
+        if not networks:
             networks = ['192.168.1.0/24', '192.168.0.0/24', '10.0.0.0/24']
             
         logger.info(f"Scanning networks: {networks}")
