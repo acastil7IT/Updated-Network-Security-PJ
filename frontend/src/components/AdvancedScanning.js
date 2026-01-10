@@ -301,6 +301,32 @@ const AdvancedScanning = () => {
     }, 3000);
   };
 
+  const handleSimulation = async (attackType) => {
+    setScanning(true);
+    try {
+      const result = await mockApi.simulateAttack(attackType);
+      
+      // Show success message
+      alert(`Simulation Complete!\n\n${result.message}\n\nAttacks: ${result.attacks_launched.join(', ')}\nIncidents Created: ${result.incidents_created}\nDuration: ${result.duration}\n\nCheck Live Threats and Threat Intelligence for results!`);
+      
+      // Add simulation results to recent scans
+      const newScan = {
+        id: Date.now(),
+        target: 'Simulation Environment',
+        type: `${attackType}_simulation`,
+        timestamp: new Date().toISOString(),
+        findings: result.incidents_created,
+        status: 'completed'
+      };
+      setRecentScans(prev => [newScan, ...prev.slice(0, 4)]);
+      
+    } catch (error) {
+      alert('Simulation failed: ' + error.message);
+    } finally {
+      setScanning(false);
+    }
+  };
+
   const generateMockScanResults = (type) => {
     const baseResults = [
       {
@@ -539,8 +565,8 @@ const AdvancedScanning = () => {
   return (
     <div className="cyberhawk-content">
       <div className="page-header">
-        <h1>Advanced Scanning</h1>
-        <p>Professional security tools integration: Nmap, Wireshark, Nikto, and more. Only scan systems you own or have permission to test.</p>
+        <h1>Security & Discovery</h1>
+        <p>Comprehensive security tools and network asset discovery. Scan systems, discover devices, and assess security posture.</p>
       </div>
 
       <div className="stats-grid">
@@ -674,13 +700,13 @@ const AdvancedScanning = () => {
         } key="devices">
           <div className="devices-section">
             <div className="section-header">
-              <h4>Discovered Network Devices</h4>
+              <h4>Network Asset Discovery</h4>
               <Button 
                 icon={<ScanOutlined />} 
                 onClick={loadNetworkDevices}
                 loading={devicesLoading}
               >
-                Refresh
+                Discover Assets
               </Button>
             </div>
             
@@ -722,7 +748,7 @@ const AdvancedScanning = () => {
           </div>
         </TabPane>
 
-        <TabPane tab="Scan Results" key="results">
+        <TabPane tab="Security Scans" key="results">
           <div className="scan-results-section">
             <h4>Latest Scan Results</h4>
             {scanResults.length > 0 ? (
@@ -742,7 +768,57 @@ const AdvancedScanning = () => {
           </div>
         </TabPane>
 
-        <TabPane tab="Recent Scans" key="history">
+        <TabPane tab="Attack Simulation" key="simulation">
+          <div className="simulation-section">
+            <h4>Security Testing & Attack Simulation</h4>
+            <div className="simulation-controls">
+              <div className="simulation-card">
+                <h5>Comprehensive Attack Demo</h5>
+                <p>Simulate realistic cyber attacks including port scanning, brute force, and vulnerability exploitation</p>
+                <Button 
+                  type="primary" 
+                  danger
+                  onClick={() => handleSimulation('comprehensive')}
+                  loading={scanning}
+                >
+                  Run Full Attack Simulation
+                </Button>
+              </div>
+              <div className="simulation-card">
+                <h5>Port Scan Simulation</h5>
+                <p>Generate port scanning activity to test detection capabilities</p>
+                <Button 
+                  onClick={() => handleSimulation('port_scan')}
+                  loading={scanning}
+                >
+                  Simulate Port Scan
+                </Button>
+              </div>
+              <div className="simulation-card">
+                <h5>Brute Force Simulation</h5>
+                <p>Test brute force attack detection and response systems</p>
+                <Button 
+                  onClick={() => handleSimulation('brute_force')}
+                  loading={scanning}
+                >
+                  Simulate Brute Force
+                </Button>
+              </div>
+            </div>
+            <div className="simulation-info">
+              <h6>Simulation Results:</h6>
+              <p>After running a simulation, check the following sections for generated alerts:</p>
+              <ul>
+                <li><strong>Live Threats</strong> - Real-time alerts will appear</li>
+                <li><strong>Threat Intelligence</strong> - Incidents will be logged</li>
+                <li><strong>Network Monitor</strong> - Traffic patterns will be visible</li>
+              </ul>
+              <p><em>Note: All simulations are safe and only generate mock data for demonstration purposes.</em></p>
+            </div>
+          </div>
+        </TabPane>
+
+        <TabPane tab="Scan History" key="history">
           <div className="scan-history-section">
             <h4>Scan History</h4>
             <Table

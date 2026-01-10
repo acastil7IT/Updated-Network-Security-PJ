@@ -173,7 +173,110 @@ export const mockApi = {
   },
   getLiveAlerts: () => Promise.resolve(mockAlerts),
   acknowledgeIncident: () => Promise.resolve({ message: 'Incident acknowledged successfully' }),
-  resolveIncident: () => Promise.resolve({ message: 'Incident resolved successfully' })
+  resolveIncident: () => Promise.resolve({ message: 'Incident resolved successfully' }),
+  
+  // Attack simulation functions
+  simulateAttack: (attackType = 'comprehensive') => {
+    const simulationResults = {
+      comprehensive: {
+        success: true,
+        message: 'Comprehensive attack simulation initiated',
+        attacks_launched: [
+          'Port scanning on 192.168.1.0/24',
+          'Brute force attack on SSH (port 22)',
+          'Web vulnerability scan',
+          'Network reconnaissance'
+        ],
+        incidents_created: 4,
+        duration: '45 seconds'
+      },
+      port_scan: {
+        success: true,
+        message: 'Port scanning simulation completed',
+        attacks_launched: ['Nmap port scan on target range'],
+        incidents_created: 1,
+        duration: '15 seconds'
+      },
+      brute_force: {
+        success: true,
+        message: 'Brute force simulation completed',
+        attacks_launched: ['SSH brute force attack'],
+        incidents_created: 1,
+        duration: '30 seconds'
+      }
+    };
+    
+    // Add new incidents to mock data
+    const newIncidents = generateSimulationIncidents(attackType);
+    mockIncidents.unshift(...newIncidents);
+    
+    // Add new alerts
+    const newAlerts = generateSimulationAlerts(attackType);
+    mockAlerts.alerts.unshift(...newAlerts);
+    
+    return Promise.resolve(simulationResults[attackType] || simulationResults.comprehensive);
+  }
 };
+
+// Helper functions for simulation
+function generateSimulationIncidents(attackType) {
+  const timestamp = new Date().toISOString();
+  const incidents = [];
+  
+  if (attackType === 'comprehensive' || attackType === 'port_scan') {
+    incidents.push({
+      id: Date.now() + Math.random(),
+      created_at: timestamp,
+      severity: 'HIGH',
+      incident_type: 'PORT_SCAN',
+      source_ip: '192.168.1.100',
+      description: '🚨 SIMULATION: Port scanning activity detected',
+      status: 'OPEN',
+      assigned_to: null,
+      resolved_at: null
+    });
+  }
+  
+  if (attackType === 'comprehensive' || attackType === 'brute_force') {
+    incidents.push({
+      id: Date.now() + Math.random() + 1,
+      created_at: timestamp,
+      severity: 'CRITICAL',
+      incident_type: 'BRUTE_FORCE',
+      source_ip: '10.0.0.50',
+      description: '🚨 SIMULATION: SSH brute force attack detected',
+      status: 'OPEN',
+      assigned_to: null,
+      resolved_at: null
+    });
+  }
+  
+  return incidents;
+}
+
+function generateSimulationAlerts(attackType) {
+  const timestamp = new Date().toISOString();
+  const alerts = [];
+  
+  if (attackType === 'comprehensive' || attackType === 'port_scan') {
+    alerts.push({
+      id: Date.now() + Math.random(),
+      threat_type: 'SIMULATION_PORT_SCAN',
+      severity: 'HIGH',
+      source_ip: '192.168.1.100',
+      description: 'SIMULATION: Automated port scanning detected',
+      confidence: 0.95,
+      timestamp: timestamp,
+      raw_data: {
+        simulation: true,
+        ports_scanned: ['22', '80', '443', '3389', '8080'],
+        scan_type: 'SYN scan',
+        duration: '15 seconds'
+      }
+    });
+  }
+  
+  return alerts;
+}
 
 export default mockApi;

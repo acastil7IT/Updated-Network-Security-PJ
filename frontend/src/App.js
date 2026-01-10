@@ -45,14 +45,9 @@ function App() {
       label: 'Live Threats',
     },
     {
-      key: '/advanced-scanning',
+      key: '/security-tools',
       icon: <BugOutlined />,
-      label: 'Security Tools',
-    },
-    {
-      key: '/network-discovery',
-      icon: <WifiOutlined />,
-      label: 'Asset Discovery',
+      label: 'Security & Discovery',
     },
   ];
 
@@ -96,8 +91,9 @@ function App() {
               <Route path="/incidents" element={<Incidents />} />
               <Route path="/traffic" element={<NetworkTraffic />} />
               <Route path="/alerts" element={<LiveAlerts />} />
+              <Route path="/security-tools" element={<AdvancedScanning />} />
               <Route path="/advanced-scanning" element={<AdvancedScanning />} />
-              <Route path="/network-discovery" element={<NetworkDiscovery />} />
+              <Route path="/network-discovery" element={<AdvancedScanning />} />
             </Routes>
           </Content>
         </Layout>
