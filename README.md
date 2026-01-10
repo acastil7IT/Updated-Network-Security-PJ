@@ -1,234 +1,206 @@
-# SecureNet Monitor - Network Security Platform
+# CyberHawk - Intelligent Threat Hunting Platform
 
-A comprehensive network security monitoring and incident response platform that demonstrates real-world cybersecurity skills through integrated applications and automated threat detection.
+<div align="center">
 
-## 🎯 Project Overview
+![CyberHawk Logo](https://img.shields.io/badge/CyberHawk-v3.0-blue?style=for-the-badge&logo=shield&logoColor=white)
+[![Security](https://img.shields.io/badge/Security-Enterprise-red?style=for-the-badge)](https://github.com/acastil7IT/Updated-Network-Security-PJ)
+[![Status](https://img.shields.io/badge/Status-Production%20Ready-green?style=for-the-badge)](https://cyberhawk-security.vercel.app)
 
-This platform combines multiple security tools and technologies to create a production-ready network monitoring solution suitable for small to medium enterprises. Perfect for demonstrating cybersecurity, DevOps, and full-stack development skills on your resume.
+**Professional-grade cybersecurity monitoring and threat detection platform**
 
-## 🏗️ Architecture Components
+[🚀 Live Demo](https://cyberhawk-security.vercel.app) • [📖 Documentation](docs/) • [🛡️ Security Features](#features)
 
-### Core Applications
-- **Traffic Analyzer** - Real-time network packet analysis using Scapy
-- **Threat Detection Engine** - ML-based anomaly detection with scikit-learn
-- **Incident Response Dashboard** - React-based monitoring interface
-- **API Gateway** - FastAPI REST API with authentication
-- **Alert Management System** - Real-time notification system
+</div>
 
-### Technologies Demonstrated
-- **Backend**: Python (FastAPI, Scapy, Pandas, Scikit-learn, AsyncPG)
-- **Frontend**: React, Ant Design, Recharts
-- **Database**: PostgreSQL with optimized schemas
-- **Caching**: Redis for real-time data streaming
-- **Search**: Elasticsearch for log analysis
-- **Monitoring**: Grafana dashboards
-- **Infrastructure**: Docker, Docker Compose, NGINX
-- **Security**: JWT authentication, input validation, SQL injection prevention
+## 🎯 Overview
+
+CyberHawk is an enterprise-grade cybersecurity platform that provides real-time network monitoring, threat detection, and incident response capabilities. Built with modern web technologies and professional security tools integration.
+
+### ✨ Key Features
+
+- **🔍 Real-time Threat Detection** - Advanced monitoring with ML-powered analysis
+- **📊 Professional Dashboard** - Clean, intuitive security operations center
+- **🌐 Network Discovery** - Automated asset discovery and monitoring
+- **⚡ Live Alerts** - Instant threat notifications and response
+- **🛠️ Security Tools Integration** - Nmap, Wireshark, Nikto, and more
+- **📈 Incident Management** - Complete threat lifecycle tracking
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Docker and Docker Compose installed
-- At least 4GB RAM available
-- Linux/macOS (Windows with WSL2)
+- Docker & Docker Compose
+- Git
 
 ### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/acastil7IT/Updated-Network-Security-PJ.git
+   cd Updated-Network-Security-PJ
+   ```
+
+2. **Start the platform**
+   ```bash
+   docker compose up -d
+   ```
+
+3. **Access CyberHawk**
+   - Web Interface: http://localhost:3000
+   - API Gateway: http://localhost:8001
+
+## 📁 Project Structure
+
+```
+CyberHawk/
+├── 📱 frontend/              # React.js web interface
+│   ├── src/components/       # UI components
+│   ├── src/services/         # API services
+│   └── public/              # Static assets
+├── 🔧 services/             # Backend microservices
+│   ├── api-gateway/         # Main API gateway
+│   ├── threat-detector/     # Threat analysis engine
+│   ├── traffic-analyzer/    # Network traffic analysis
+│   ├── network-discovery/   # Device discovery service
+│   └── security-tools/      # Security tools integration
+├── 🗄️ database/            # Database schemas and data
+├── 📚 docs/                # Documentation
+├── 🎮 demos/               # Demo scripts and examples
+├── 📜 scripts/             # Deployment and setup scripts
+└── 🐳 Docker files         # Container configurations
+```
+
+## 🛡️ Security Features
+
+### Threat Intelligence
+- **Real-time Monitoring** - Continuous network surveillance
+- **Incident Classification** - Automated threat categorization
+- **Risk Assessment** - Dynamic risk scoring and prioritization
+- **Response Workflows** - Guided incident response procedures
+
+### Network Analysis
+- **Traffic Monitoring** - Deep packet inspection and analysis
+- **Device Discovery** - Automated network asset identification
+- **Vulnerability Scanning** - Integrated security assessment tools
+- **Anomaly Detection** - ML-powered behavioral analysis
+
+### Professional Tools
+- **Nmap Integration** - Network discovery and port scanning
+- **Wireshark Analysis** - Packet capture and protocol analysis
+- **Nikto Scanning** - Web vulnerability assessment
+- **Custom Security Tools** - Extensible tool framework
+
+## 🎮 Demo & Testing
+
+### Attack Simulation
 ```bash
-# Clone the repository
-git clone <your-repo-url>
-cd securenet-monitor
+# Run comprehensive attack simulation
+python3 demos/comprehensive_attack_demo.py
 
-# Run the automated setup
-./setup.sh
+# Generate network traffic
+python3 demos/traffic_injector.py
+
+# Trigger device discovery
+python3 demos/device_discovery_demo.py
 ```
 
-The setup script will:
-1. Build all Docker containers
-2. Initialize the database with sample data
-3. Start all services
-4. Verify system health
-5. Display access URLs
-
-### Access Points
-- **Dashboard**: http://localhost:3000
-- **API Documentation**: http://localhost:8000/docs
-- **Grafana**: http://localhost:3001 (admin/admin123)
-- **Database**: localhost:5432 (admin/secure123)
-
-## 🛡️ Security Features Implemented
-
-### Network Security
-- **Packet Capture**: Real-time network traffic analysis
-- **Protocol Analysis**: TCP, UDP, ICMP packet inspection
-- **Port Scan Detection**: Automated scanning behavior identification
-- **Anomaly Detection**: ML-based unusual traffic pattern detection
-- **Device Discovery**: Automatic network device identification and monitoring
-
-### Device Management
-- **Network Scanning**: Continuous discovery of devices on local networks
-- **Device Classification**: Automatic identification of device types (routers, servers, IoT devices)
-- **Risk Assessment**: Automated security risk scoring for discovered devices
-- **Service Detection**: Identification of running services and open ports
-- **Vendor Identification**: MAC address-based vendor detection
-
-### Threat Detection
-- **Signature-based Detection**: Known threat pattern matching
-- **Behavioral Analysis**: Statistical anomaly identification
-- **Risk Scoring**: Automated threat severity assessment
-- **False Positive Reduction**: ML model training on historical data
-
-### Incident Response
-- **Automated Alerting**: Real-time threat notifications
-- **Incident Workflow**: Acknowledge, assign, and resolve incidents
-- **Audit Trail**: Complete incident history and actions
-- **Compliance Reporting**: SOC 2 and PCI DSS ready reports
-
-## 📊 Dashboard Features
-
-### Real-time Monitoring
-- Live network traffic visualization
-- Security incident status board
-- Threat detection metrics
-- System health monitoring
-
-### Analytics
-- Traffic pattern analysis
-- Incident trend reporting
-- Top source IP identification
-- Protocol distribution charts
-- Network device inventory and monitoring
-- Device risk assessment and classification
-
-### Management
-- Incident acknowledgment and resolution
-- Alert configuration
-- User access control
-- System configuration
-
-## 🔧 Technical Implementation
-
-### Database Schema
-```sql
--- Optimized tables for high-volume traffic data
-network_traffic (indexed on timestamp, source_ip)
-security_incidents (with severity and status tracking)
-threat_signatures (configurable detection rules)
-alerts (linked to incidents with acknowledgment tracking)
-```
-
-### API Endpoints
-```
-GET  /api/dashboard/stats    - Dashboard metrics
-GET  /api/incidents         - Security incidents (filterable)
-GET  /api/traffic          - Network traffic data
-GET  /api/alerts/live      - Real-time alert stream
-POST /api/incidents/{id}/acknowledge
-POST /api/incidents/{id}/resolve
-```
-
-### Machine Learning Pipeline
-1. **Feature Extraction**: IP addresses, ports, packet sizes, timing
-2. **Model Training**: Isolation Forest for anomaly detection
-3. **Real-time Scoring**: Continuous threat assessment
-4. **Adaptive Learning**: Model retraining on new data
-
-## 🏢 Real-World Applications
-
-### Enterprise Use Cases
-- **SOC Operations**: 24/7 security monitoring
-- **Compliance**: Automated audit trail generation
-- **Incident Response**: Streamlined threat handling
-- **Network Forensics**: Historical traffic analysis
-
-### Industry Applications
-- Financial services network monitoring
-- Healthcare HIPAA compliance
-- E-commerce fraud detection
-- Government security operations
-
-## 📈 Resume Value
-
-### Skills Demonstrated
-- **Cybersecurity**: Threat detection, incident response, network security
-- **Full-Stack Development**: React frontend, Python backend, REST APIs
-- **DevOps**: Docker containerization, CI/CD ready, infrastructure as code
-- **Data Science**: Machine learning, anomaly detection, statistical analysis
-- **Database Design**: PostgreSQL optimization, indexing strategies
-- **System Architecture**: Microservices, message queuing, load balancing
-
-### Quantifiable Achievements
-- Processes 1000+ packets per second
-- Detects threats with 95%+ accuracy
-- Sub-second alert response time
-- Handles 10,000+ concurrent connections
-- 99.9% uptime with health monitoring
-
-## 🔍 Advanced Features
-
-### Scalability
-- Horizontal scaling with Docker Swarm
-- Database connection pooling
-- Redis clustering support
-- Load balancing with NGINX
-
-### Security Hardening
-- Non-root container execution
-- Input sanitization and validation
-- SQL injection prevention
-- Rate limiting and DDoS protection
-
-### Monitoring & Observability
-- Structured logging with correlation IDs
-- Prometheus metrics integration
-- Grafana dashboard templates
-- Health check endpoints
-
-## 🚀 Deployment Options
-
-### Development
+### Security Assessment
 ```bash
-docker-compose up -d
+# Advanced security scanning
+python3 demos/advanced_security_demo.py
+
+# Clear test data
+python3 demos/clear_mock_incidents.py
 ```
 
-### Production
+## 🔧 Configuration
+
+### Environment Setup
+Copy `.env.example` to `.env` and configure:
 ```bash
-# With SSL and production settings
-docker-compose -f docker-compose.prod.yml up -d
+cp .env.example .env
 ```
 
-### Cloud Deployment
-- AWS ECS/Fargate ready
-- Kubernetes manifests included
-- Terraform infrastructure templates
-- CI/CD pipeline configurations
+### Database Configuration
+- PostgreSQL database with automated schema setup
+- Sample data for testing and demonstration
+- Backup and restore capabilities
 
-## 📚 Documentation
+### Security Settings
+- JWT authentication for API access
+- Rate limiting and request validation
+- Secure communication between services
 
-### API Documentation
-- Interactive Swagger UI at `/docs`
-- OpenAPI 3.0 specification
-- Authentication examples
-- Rate limiting information
+## 📊 Monitoring & Analytics
 
-### Architecture Diagrams
-- System component overview
-- Data flow diagrams
-- Security model documentation
-- Deployment architecture
+### Dashboard Features
+- **Command Center** - Executive security overview
+- **Threat Intelligence** - Detailed incident analysis
+- **Network Monitor** - Real-time traffic visualization
+- **Live Threats** - Active threat monitoring
+- **Security Tools** - Integrated scanning capabilities
+- **Asset Discovery** - Network device management
+
+### Reporting
+- Automated threat reports
+- Compliance dashboards
+- Performance metrics
+- Security posture assessment
+
+## 🚀 Deployment
+
+### Local Development
+```bash
+# Start development environment
+docker compose up -d
+
+# View logs
+docker compose logs -f
+```
+
+### Production Deployment
+```bash
+# Deploy to production
+./scripts/deploy.sh
+
+# Health check
+curl http://localhost:8001/health
+```
+
+### Cloud Platforms
+- **Vercel** - Frontend deployment
+- **Railway** - Full-stack deployment
+- **AWS/GCP/Azure** - Enterprise deployment
 
 ## 🤝 Contributing
 
-This project demonstrates production-ready code with:
-- Comprehensive error handling
-- Unit and integration tests
-- Code quality standards
-- Security best practices
-- Performance optimization
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## 📄 License
 
-MIT License - Feel free to use this project for your portfolio, learning, or commercial applications.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🔗 Links
+
+- **Live Demo**: https://cyberhawk-security.vercel.app
+- **Repository**: https://github.com/acastil7IT/Updated-Network-Security-PJ
+- **Documentation**: [docs/](docs/)
+- **Issues**: [GitHub Issues](https://github.com/acastil7IT/Updated-Network-Security-PJ/issues)
+
+## 📞 Support
+
+For support, email security@cyberhawk.dev or join our [Discord community](https://discord.gg/cyberhawk).
 
 ---
 
-**Perfect for showcasing on your resume as a comprehensive cybersecurity and full-stack development project that demonstrates real-world enterprise security solutions.**
+<div align="center">
+
+**Built with ❤️ for cybersecurity professionals**
+
+[![GitHub stars](https://img.shields.io/github/stars/acastil7IT/Updated-Network-Security-PJ?style=social)](https://github.com/acastil7IT/Updated-Network-Security-PJ/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/acastil7IT/Updated-Network-Security-PJ?style=social)](https://github.com/acastil7IT/Updated-Network-Security-PJ/network/members)
+
+</div>
