@@ -32,20 +32,9 @@ const LiveAlerts = () => {
 
   const fetchLiveAlerts = async () => {
     try {
-      // Try to fetch from real API first
-      try {
-        const response = await axios.get('http://localhost:8001/api/alerts/live', {
-          headers: {
-            'Authorization': 'Bearer demo-token'
-          }
-        });
-        setAlerts(response.data.alerts || []);
-        return;
-      } catch (apiError) {
-        console.log('Real API unavailable, using mock data for cloud deployment');
-      }
+      setLoading(true);
       
-      // Fallback to mock data for cloud deployment
+      // Always use mock data for now since API is not running
       const mockData = await mockApi.getLiveAlerts();
       setAlerts(mockData.alerts || []);
       

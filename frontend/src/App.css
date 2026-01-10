@@ -91,55 +91,18 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   height: 72px;
 }
 
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 16px;
+.header-title {
+  text-align: center;
 }
 
-.collapse-btn {
-  color: #64748b;
-  font-size: 16px;
-}
-
-.collapse-btn:hover {
-  color: #0ea5e9;
-  background: rgba(14, 165, 233, 0.1);
-}
-
-.header-title h4 {
+.header-title h2 {
   color: #1e293b;
   margin: 0;
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-}
-
-.header-right .ant-btn {
-  color: #64748b;
-  border: none;
-  box-shadow: none;
-}
-
-.header-right .ant-btn:hover {
-  color: #0ea5e9;
-  background: rgba(14, 165, 233, 0.1);
-}
-
-.user-profile {
-  padding: 8px 12px;
-  border-radius: 8px;
-  transition: background 0.3s ease;
-}
-
-.user-profile:hover {
-  background: rgba(14, 165, 233, 0.1);
+  font-weight: 600;
 }
 
 /* Content Area */
