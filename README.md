@@ -96,21 +96,14 @@ CyberHawk/
 # Run comprehensive attack simulation
 python3 demos/comprehensive_attack_demo.py
 
-# Generate network traffic
+# Generate network traffic patterns
 python3 demos/traffic_injector.py
-
-# Trigger device discovery
-python3 demos/device_discovery_demo.py
 ```
 
-### Security Assessment
-```bash
-# Advanced security scanning
-python3 demos/advanced_security_demo.py
-
-# Clear test data
-python3 demos/clear_mock_incidents.py
-```
+### Web Interface Testing
+- Navigate to **Security & Discovery** → **Attack Simulation** tab
+- Use the built-in web-based attack simulations
+- Monitor results in **Live Threats** and **Network Monitor** sections
 
 ## 🔧 Configuration
 
