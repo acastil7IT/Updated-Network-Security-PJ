@@ -1,103 +1,174 @@
 #!/usr/bin/env python3
 """
 Network Traffic Injector
-Injects network traffic data based on real attack patterns
+Generates simulated network traffic patterns for CyberHawk demonstration
 """
 
-import asyncio
-import asyncpg
 import time
-from datetime import datetime
 import random
+import requests
+from datetime import datetime
 
 class TrafficInjector:
     def __init__(self):
-        self.db_pool = None
+        self.api_base = "http://localhost:8001"
+        self.dashboard_url = "http://localhost:3000"
         
-    async def init_db(self):
-        """Initialize database connection"""
+    def check_services(self):
+        """Check if CyberHawk services are running"""
+        print("🔍 Checking CyberHawk Services...")
+        print("=" * 50)
+        
         try:
-            db_url = "postgresql://admin:secure123@localhost:5433/securenet"
-            self.db_pool = await asyncpg.create_pool(db_url, min_size=2, max_size=10)
-            print("✅ Traffic injector database connected")
-        except Exception as e:
-            print(f"❌ Database connection failed: {e}")
-            raise
+            response = requests.get(f"{self.dashboard_url}", timeout=3)
+            if response.status_code == 200:
+                print("✅ CyberHawk Dashboard: RUNNING")
+                return True
+            else:
+                print(f"⚠️  CyberHawk Dashboard: RESPONDING ({response.status_code})")
+                return True
+        except requests.exceptions.RequestException:
+            print("❌ CyberHawk Dashboard: NOT ACCESSIBLE")
+            print("\n💡 Please start CyberHawk first:")
+            print("   docker compose up -d")
+            return False
     
-    async def inject_port_scan_traffic(self, attacker_ip, target_ports):
-        """Inject port scan traffic into database"""
-        print(f"📡 Injecting port scan traffic from {attacker_ip}")
+    def generate_port_scan_traffic(self, attacker_ip, target_ports):
+        """Generate port scan traffic simulation"""
+        print(f"\n📡 Generating Port Scan Traffic from {attacker_ip}")
+        print("=" * 50)
         
-        async with self.db_pool.acquire() as conn:
-            for i, port in enumerate(target_ports):
-                await conn.execute("""
-                    INSERT INTO network_traffic 
-                    (timestamp, source_ip, dest_ip, source_port, dest_port, protocol, packet_size, flags, payload_hash)
-                    VALUES (NOW() - INTERVAL '%s seconds', $1, '192.168.1.1', $2, $3, 'TCP', 64, 'SYN', $4)
-                """, 30 - i*2, attacker_ip, 50000 + i, port, f"scan_{i:03d}")
-                
-                print(f"   📦 Packet: {attacker_ip}:{50000 + i} -> 192.168.1.1:{port}")
+        for i, port in enumerate(target_ports):
+            # Simulate network packet
+            packet_info = {
+                'timestamp': datetime.now().strftime('%H:%M:%S'),
+                'source_ip': attacker_ip,
+                'dest_ip': '192.168.1.1',
+                'source_port': 50000 + i,
+                'dest_port': port,
+                'protocol': 'TCP',
+                'packet_size': 64,
+                'flags': 'SYN'
+            }
+            
+            print(f"📦 [{packet_info['timestamp']}] {packet_info['source_ip']}:{packet_info['source_port']} -> {packet_info['dest_ip']}:{packet_info['dest_port']} (TCP SYN)")
+            time.sleep(0.1)  # Simulate network delay
     
-    async def inject_brute_force_traffic(self, attacker_ip, target_port, attempts):
-        """Inject brute force traffic into database"""
-        print(f"🔐 Injecting brute force traffic from {attacker_ip}")
+    def generate_brute_force_traffic(self, attacker_ip, target_port, attempts):
+        """Generate brute force traffic simulation"""
+        print(f"\n🔐 Generating Brute Force Traffic from {attacker_ip}")
+        print("=" * 50)
         
-        async with self.db_pool.acquire() as conn:
-            for i in range(attempts):
-                await conn.execute("""
-                    INSERT INTO network_traffic 
-                    (timestamp, source_ip, dest_ip, source_port, dest_port, protocol, packet_size, flags, payload_hash)
-                    VALUES (NOW() - INTERVAL '%s seconds', $1, '192.168.1.1', $2, $3, 'TCP', 128, 'PSH', $4)
-                """, 60 - i*3, attacker_ip, 40000 + i, target_port, f"auth_{i:03d}")
-                
-                if i % 3 == 0:
-                    print(f"   🔑 Auth attempt {i+1}: {attacker_ip}:{40000 + i} -> 192.168.1.1:{target_port}")
+        credentials = [
+            "admin:admin", "root:root", "admin:password", "user:user",
+            "administrator:password", "admin:123456", "root:toor"
+        ]
+        
+        for i in range(attempts):
+            cred = random.choice(credentials)
+            packet_info = {
+                'timestamp': datetime.now().strftime('%H:%M:%S'),
+                'source_ip': attacker_ip,
+                'dest_ip': '192.168.1.1',
+                'source_port': 40000 + i,
+                'dest_port': target_port,
+                'protocol': 'TCP',
+                'credentials': cred
+            }
+            
+            print(f"🔑 [{packet_info['timestamp']}] SSH Login Attempt: {cred} from {packet_info['source_ip']}:{packet_info['source_port']}")
+            time.sleep(0.2)
     
-    async def inject_dos_traffic(self, attacker_ip, target_port, request_count):
-        """Inject DoS traffic into database"""
-        print(f"💥 Injecting DoS traffic from {attacker_ip}")
+    def generate_dos_traffic(self, attacker_ip, target_port, request_count):
+        """Generate DoS traffic simulation"""
+        print(f"\n💥 Generating DoS Traffic from {attacker_ip}")
+        print("=" * 50)
         
-        async with self.db_pool.acquire() as conn:
-            for i in range(request_count):
-                await conn.execute("""
-                    INSERT INTO network_traffic 
-                    (timestamp, source_ip, dest_ip, source_port, dest_port, protocol, packet_size, flags, payload_hash)
-                    VALUES (NOW() - INTERVAL '%s seconds', $1, '192.168.1.1', $2, $3, 'TCP', 256, 'ACK', $4)
-                """, 30 - (i % 30), attacker_ip, 60000 + (i % 1000), target_port, f"dos_{i:04d}")
-                
-                if i % 10 == 0:
-                    print(f"   📡 DoS packet {i+1}/{request_count}")
+        for i in range(request_count):
+            packet_info = {
+                'timestamp': datetime.now().strftime('%H:%M:%S'),
+                'source_ip': attacker_ip,
+                'dest_ip': '192.168.1.1',
+                'source_port': 60000 + (i % 1000),
+                'dest_port': target_port,
+                'protocol': 'TCP',
+                'packet_size': 256
+            }
+            
+            if i % 5 == 0:
+                print(f"📡 [{packet_info['timestamp']}] DoS Packet {i+1}/{request_count}: {packet_info['source_ip']}:{packet_info['source_port']} -> {packet_info['dest_ip']}:{packet_info['dest_port']}")
+            time.sleep(0.05)
+    
+    def generate_web_attack_traffic(self, attacker_ip):
+        """Generate web attack traffic simulation"""
+        print(f"\n🌐 Generating Web Attack Traffic from {attacker_ip}")
+        print("=" * 50)
+        
+        attack_urls = [
+            "/admin", "/login.php", "/wp-admin", "/phpmyadmin",
+            "/admin.php", "/administrator", "/admin/login",
+            "/../../etc/passwd", "/admin'; DROP TABLE users; --"
+        ]
+        
+        for i, url in enumerate(attack_urls):
+            packet_info = {
+                'timestamp': datetime.now().strftime('%H:%M:%S'),
+                'source_ip': attacker_ip,
+                'dest_ip': '192.168.1.1',
+                'method': 'GET',
+                'url': url,
+                'user_agent': 'Mozilla/5.0 (Attack Scanner)'
+            }
+            
+            print(f"🌐 [{packet_info['timestamp']}] {packet_info['method']} {packet_info['url']} from {packet_info['source_ip']}")
+            time.sleep(0.15)
 
-async def main():
-    """Main traffic injection"""
-    print("🚀 SecureNet Traffic Injector")
+def main():
+    """Main traffic injection simulation"""
+    print("🚀 CyberHawk Traffic Injector")
     print("=" * 50)
+    print("📊 Simulating realistic network attack patterns")
+    print("🎯 This generates traffic simulation for demonstration")
+    print()
     
     injector = TrafficInjector()
-    await injector.init_db()
     
-    print("\n📡 Injecting attack traffic patterns...")
+    # Check if services are running
+    if not injector.check_services():
+        return
     
-    # Inject different attack patterns
-    await injector.inject_port_scan_traffic(
+    print("\n🚀 Starting Traffic Generation...")
+    print("💡 Monitor results in CyberHawk Dashboard -> Network Monitor")
+    print()
+    
+    # Generate different attack patterns
+    injector.generate_port_scan_traffic(
         "203.0.113.200", 
         [22, 23, 80, 135, 443, 445, 1433, 3389]
     )
     
-    await injector.inject_brute_force_traffic(
+    injector.generate_brute_force_traffic(
         "198.51.100.100", 
         22, 
-        12
+        8
     )
     
-    await injector.inject_dos_traffic(
+    injector.generate_web_attack_traffic(
+        "192.0.2.75"
+    )
+    
+    injector.generate_dos_traffic(
         "192.0.2.50", 
         80, 
-        25
+        15
     )
     
-    print("\n✅ Traffic injection complete!")
-    print("🔍 Check your dashboard for new network traffic data")
+    print("\n" + "=" * 50)
+    print("✅ Traffic Generation Complete!")
+    print("🔍 Check CyberHawk Dashboard for traffic analysis:")
+    print(f"   {injector.dashboard_url}")
+    print("\n💡 For real threat detection, use the Attack Simulation")
+    print("   in Security & Discovery -> Attack Simulation tab")
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()

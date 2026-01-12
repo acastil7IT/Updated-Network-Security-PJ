@@ -25,16 +25,8 @@ Generates realistic network traffic patterns for testing traffic analysis.
 python3 demos/traffic_injector.py
 ```
 
-### 3. **device_discovery_demo.py**
-Tests network device discovery and asset identification capabilities.
-
-**Usage:**
-```bash
-python3 demos/device_discovery_demo.py
-```
-
-### 4. **clear_mock_incidents.py**
-Utility script to clean up test data and reset the system.
+### 3. **clear_mock_incidents.py**
+Utility script to clean up test data and reset the system for clean demonstrations.
 
 **Usage:**
 ```bash
