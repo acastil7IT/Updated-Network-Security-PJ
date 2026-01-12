@@ -3,20 +3,16 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import {
   DashboardOutlined,
-  AlertOutlined,
   GlobalOutlined,
   SecurityScanOutlined,
   BugOutlined,
-  WifiOutlined,
   SafetyOutlined
 } from '@ant-design/icons';
 
 import Dashboard from './components/Dashboard';
-import Incidents from './components/Incidents';
 import NetworkTraffic from './components/NetworkTraffic';
 import LiveAlerts from './components/LiveAlerts';
 import AdvancedScanning from './components/AdvancedScanning';
-import NetworkDiscovery from './components/NetworkDiscovery';
 
 import './App.css';
 
@@ -28,11 +24,6 @@ function App() {
       key: '/',
       icon: <DashboardOutlined />,
       label: 'Command Center',
-    },
-    {
-      key: '/incidents',
-      icon: <AlertOutlined />,
-      label: 'Threat Intelligence',
     },
     {
       key: '/traffic',
@@ -88,7 +79,6 @@ function App() {
           <Content className="cyberhawk-content">
             <Routes>
               <Route path="/" element={<Dashboard />} />
-              <Route path="/incidents" element={<Incidents />} />
               <Route path="/traffic" element={<NetworkTraffic />} />
               <Route path="/alerts" element={<LiveAlerts />} />
               <Route path="/security-tools" element={<AdvancedScanning />} />
