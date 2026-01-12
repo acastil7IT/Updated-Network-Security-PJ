@@ -634,7 +634,7 @@ def main():
     print(f"   🕒 All created at {datetime.now().strftime('%H:%M:%S')} (just now!)")
     
     print(f"\n🛡️  Your CyberHawk platform demonstrates enterprise-grade threat detection!")
-    print(f"   Perfect for interviews and security demonstrations.")
+    print(f"   Perfect for security demonstrations and testing.")
 
 if __name__ == "__main__":
     main()
