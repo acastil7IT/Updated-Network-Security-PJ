@@ -16,6 +16,48 @@
 
 CyberHawk is an enterprise-grade cybersecurity platform that provides real-time network monitoring, threat detection, and incident response capabilities. Built with modern web technologies and professional security tools integration.
 
+## Technology Stack
+
+### Frontend Technologies
+- **React.js** - Modern JavaScript framework for building user interfaces
+- **Ant Design** - Professional UI component library for enterprise applications
+- **CSS3** - Custom styling with responsive design and dark theme
+- **Axios** - HTTP client for API communication
+- **JavaScript ES6+** - Modern JavaScript features and syntax
+
+### Backend Technologies
+- **Python 3.8+** - Primary backend programming language
+- **FastAPI** - High-performance web framework for building APIs
+- **PostgreSQL** - Robust relational database for data persistence
+- **SQLAlchemy** - Python SQL toolkit and Object-Relational Mapping
+- **Uvicorn** - Lightning-fast ASGI server implementation
+
+### Security & Networking Tools
+- **Nmap** - Network discovery and security auditing
+- **Wireshark** - Network protocol analyzer
+- **Nikto** - Web server scanner for vulnerabilities
+- **Scapy** - Python packet manipulation library
+- **Custom Security Scripts** - Tailored threat detection algorithms
+
+### Infrastructure & DevOps
+- **Docker** - Containerization platform for consistent deployments
+- **Docker Compose** - Multi-container application orchestration
+- **Nginx** - High-performance web server and reverse proxy
+- **Redis** - In-memory data structure store for caching
+- **Shell Scripts** - Automation and deployment scripts
+
+### Cloud & Deployment
+- **Vercel** - Frontend hosting and serverless deployment
+- **Railway** - Full-stack application deployment platform
+- **GitHub Actions** - CI/CD pipeline automation (ready)
+- **Environment Variables** - Secure configuration management
+
+### Development Tools
+- **Git** - Version control system
+- **ESLint** - JavaScript code linting and formatting
+- **Python Virtual Environments** - Isolated dependency management
+- **npm/yarn** - JavaScript package management
+
 ### Key Features
 
 - **Real-time Threat Detection** - Advanced monitoring with ML-powered analysis
@@ -28,45 +70,107 @@ CyberHawk is an enterprise-grade cybersecurity platform that provides real-time 
 ## Quick Start
 
 ### Prerequisites
-- Docker & Docker Compose
-- Git
+- **Docker** (v20.10+) & **Docker Compose** (v2.0+)
+- **Git** for version control
+- **Node.js** (v16+) and **npm** (for frontend-only setup)
+- **Python** (v3.8+) for running demo scripts
 
-### Installation
+### Installation Options
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/acastil7IT/Updated-Network-Security-PJ.git
-   cd Updated-Network-Security-PJ
-   ```
+#### Option 1: Full Docker Deployment (Recommended)
+```bash
+# Clone the repository
+git clone https://github.com/acastil7IT/Updated-Network-Security-PJ.git
+cd Updated-Network-Security-PJ
 
-2. **Start the platform**
-   ```bash
-   docker compose up -d
-   ```
+# Start all services with Docker
+docker compose up -d
 
-3. **Access CyberHawk**
-   - Web Interface: http://localhost:3000
-   - API Gateway: http://localhost:8001
+# Access the platform
+# Web Interface: http://localhost:3000
+# API Gateway: http://localhost:8001
+# Database: localhost:5432
+```
+
+#### Option 2: Frontend Only (Quick Test)
+```bash
+# Clone and navigate to frontend
+git clone https://github.com/acastil7IT/Updated-Network-Security-PJ.git
+cd Updated-Network-Security-PJ/frontend
+
+# Install dependencies and start
+npm install
+npm start
+
+# Access at http://localhost:3000
+# Uses mock data (same as live demo)
+```
+
+#### Option 3: Live Demo (No Installation)
+Visit: [https://updated-network-security-pj-j85o-q924y25nb-acastil7its-projects.vercel.app](https://updated-network-security-pj-j85o-q924y25nb-acastil7its-projects.vercel.app)
 
 ## Project Structure
 
 ```
 CyberHawk/
-├── frontend/              # React.js web interface
-│   ├── src/components/       # UI components
-│   ├── src/services/         # API services
-│   └── public/              # Static assets
-├── services/             # Backend microservices
-│   ├── api-gateway/         # Main API gateway
-│   ├── threat-detector/     # Threat analysis engine
-│   ├── traffic-analyzer/    # Network traffic analysis
-│   ├── network-discovery/   # Device discovery service
-│   └── security-tools/      # Security tools integration
-├── database/            # Database schemas and data
-├── docs/                # Documentation
-├── demos/               # Demo scripts and examples
-├── scripts/             # Deployment and setup scripts
-└── Docker files         # Container configurations
+├── frontend/                    # React.js Frontend Application
+│   ├── src/
+│   │   ├── components/         # React components (.js files)
+│   │   │   ├── Dashboard.js    # Main security dashboard
+│   │   │   ├── Incidents.js    # Incident management interface
+│   │   │   ├── NetworkTraffic.js # Traffic monitoring display
+│   │   │   ├── LiveAlerts.js   # Real-time threat alerts
+│   │   │   └── AdvancedScanning.js # Security tools interface
+│   │   ├── services/           # API service layers
+│   │   │   └── mockApi.js      # Mock data for cloud deployment
+│   │   └── App.js              # Main React application
+│   ├── public/                 # Static assets and HTML
+│   ├── package.json            # Node.js dependencies
+│   └── Dockerfile              # Frontend container configuration
+│
+├── services/                    # Python Backend Microservices
+│   ├── api-gateway/            # FastAPI main gateway
+│   │   └── main.py             # API routes and endpoints
+│   ├── threat-detector/        # Security analysis engine
+│   │   ├── main.py             # Threat detection service
+│   │   └── real_time_detector.py # ML-based threat analysis
+│   ├── traffic-analyzer/       # Network traffic processing
+│   │   └── main.py             # Packet analysis service
+│   ├── network-discovery/      # Asset discovery service
+│   │   └── network_discovery.py # Network scanning logic
+│   └── security-tools/         # Security tool integrations
+│       └── advanced_scanner.py # Nmap/Nikto integration
+│
+├── database/                    # PostgreSQL Database
+│   ├── init.sql                # Database schema creation
+│   └── sample_data.sql         # Demo data for testing
+│
+├── docs/                       # Project Documentation
+│   ├── PROJECT_SUMMARY.md      # Technical overview
+│   ├── TECHNICAL_ARCHITECTURE.md # Detailed architecture
+│   ├── DEPLOYMENT.md           # Deployment instructions
+│   └── HOW_IT_WORKS.md         # User guide
+│
+├── demos/                      # Python Demo Scripts
+│   ├── comprehensive_attack_demo.py # Full attack simulation
+│   ├── traffic_injector.py     # Network traffic generator
+│   └── README.md               # Demo documentation
+│
+├── scripts/                    # Automation Scripts
+│   ├── deploy.sh               # Production deployment
+│   ├── setup.sh                # Initial setup automation
+│   └── update_ui_live.sh       # Live update script
+│
+├── nginx/                      # Web Server Configuration
+│   ├── nginx.conf              # Development configuration
+│   └── nginx.prod.conf         # Production configuration
+│
+├── docker-compose.yml          # Multi-service orchestration
+├── docker-compose.prod.yml     # Production Docker setup
+├── Dockerfile.railway          # Railway deployment config
+├── vercel.json                 # Vercel deployment config
+├── railway.json                # Railway platform config
+└── .env.example                # Environment variables template
 ```
 
 ## Security Features
@@ -91,37 +195,72 @@ CyberHawk/
 
 ## Demo & Testing
 
-### Attack Simulation
+### Python Demo Scripts
 ```bash
 # Run comprehensive attack simulation
 python3 demos/comprehensive_attack_demo.py
 
-# Generate network traffic patterns
+# Generate network traffic patterns  
 python3 demos/traffic_injector.py
 ```
 
+**Demo Script Details:**
+- `comprehensive_attack_demo.py` - Full security testing suite with port scans, brute force, and vulnerability tests
+- `traffic_injector.py` - Network traffic simulation for testing monitoring capabilities
+- All scripts include realistic attack patterns and safety measures
+
 ### Web Interface Testing
-- Navigate to **Security & Discovery** → **Attack Simulation** tab
-- Use the built-in web-based attack simulations
-- Monitor results in **Live Threats** and **Network Monitor** sections
+1. Navigate to **Security & Discovery** → **Attack Simulation** tab
+2. Choose simulation type:
+   - **Comprehensive Attack Demo** - Full attack simulation
+   - **Port Scan Simulation** - Network reconnaissance testing
+   - **Brute Force Simulation** - Login attack simulation
+3. Monitor results in **Live Threats** and **Network Monitor** sections
+4. View incident details in **Command Center** dashboard
+
+### API Testing
+```bash
+# Health check
+curl http://localhost:8001/health
+
+# Get incidents
+curl http://localhost:8001/api/incidents
+
+# Get network traffic
+curl http://localhost:8001/api/traffic
+
+# Get live alerts
+curl http://localhost:8001/api/alerts
+```
 
 ## Configuration
 
 ### Environment Setup
-Copy `.env.example` to `.env` and configure:
 ```bash
+# Copy environment template
 cp .env.example .env
+
+# Edit configuration (optional)
+nano .env
 ```
 
+**Key Configuration Files:**
+- `.env` - Environment variables (database, API keys)
+- `docker-compose.yml` - Service orchestration
+- `frontend/package.json` - Node.js dependencies
+- `requirements.txt` - Python dependencies (in service folders)
+
 ### Database Configuration
-- PostgreSQL database with automated schema setup
-- Sample data for testing and demonstration
-- Backup and restore capabilities
+- **PostgreSQL 13+** with automated schema setup
+- **Sample data** included for testing and demonstration
+- **Backup/restore** capabilities built-in
+- **Connection**: `postgresql://admin:password@localhost:5432/securenet`
 
 ### Security Settings
-- JWT authentication for API access
-- Rate limiting and request validation
-- Secure communication between services
+- **JWT authentication** for API access
+- **Rate limiting** and request validation
+- **CORS configuration** for cross-origin requests
+- **SSL/TLS** ready for production deployment
 
 ## Monitoring & Analytics
 
